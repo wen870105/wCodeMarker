@@ -1,15 +1,11 @@
-package ${package};
+package ${package}.dao;
 
-import java.util.List;
-import com.tj.tjk.dao.base.impl.BaseDaoImpl;
-import com.tj.tjk.exception.BusinessException;
-import org.springframework.stereotype.Service;
-
+import com.tj.platform.order.dao.base.BaseDao;
 /**
  * 
  * @author ${author}
  * @since ${date}
  */
-public interface ${className}Dao extends BaseDao<${className}, Long> {
+public interface ${className}Dao extends BaseDao {
 
 }

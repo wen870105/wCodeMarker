@@ -94,7 +94,7 @@ public class ColumnMetadata {
 		if (type.contains("char") || type.contains("bit")) {
 			return "boolean";
 		}
-		if (type.contains("Timestamp") || type.contains("date") || type.contains("datetime")) {
+		if (type.contains("Timestamp") || type.contains("date") || type.contains("datetime") || type.equalsIgnoreCase("Timestamp")) {
 			return "Date";
 		}		
 		if (type.equalsIgnoreCase("int") || type.equalsIgnoreCase("tinyint")) {

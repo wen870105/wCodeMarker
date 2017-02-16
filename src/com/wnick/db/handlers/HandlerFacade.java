@@ -5,7 +5,6 @@ import java.util.List;
 import com.wnick.ResourceManager;
 import com.wnick.data.GenerateData;
 import com.wnick.data.IbatisDaoData;
-import com.wnick.data.IbatisDaoImplData;
 import com.wnick.data.IbatistXmlData;
 import com.wnick.data.JavaDomainData;
 import com.wnick.data.MybatistXmlData;
@@ -30,7 +29,7 @@ public class HandlerFacade {
 				createFiles(new JavaDomainData(tm));
 				createFiles(new IbatistXmlData(tm));
 				createFiles(new IbatisDaoData(tm));
-				createFiles(new IbatisDaoImplData(tm));
+//				createFiles(new IbatisDaoImplData(tm));
 //				createFiles(new CreateJspData(tm));
 				createFiles(new ServiceData(tm));
 				createFiles(new ServiceImplData(tm));

@@ -45,7 +45,7 @@ public abstract class GenerateData {
 	public String creatFile() {
 		CountManager.increment();
 		
-		String packageString = "src/"+PACKAGE_STR.replaceAll("\\.", "/")+ "/" +getPackageStoreDirectory();
+		String packageString = "d:\\"+PACKAGE_STR.replaceAll("\\.", "/")+ "/" +getPackageStoreDirectory();
 		//存放目录 
 		File dir = new File(packageString);
 		if (!dir.exists()) {

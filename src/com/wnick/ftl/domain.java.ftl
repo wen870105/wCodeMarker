@@ -1,13 +1,15 @@
 package ${package}.domain;
 
 import java.util.Date;
+import java.io.Serializable;
+import ${package}.domain.base.BaseDomain;
 
 /**
  * ${tm.tableComment}
  * @author ${author}
  * @since ${date}
  */
-public class ${className} {
+public class ${className} implements Serializable{
 <#list tm.columnMetadata as c>
 	// ${c.columnComment}
 	private ${c.javaType} ${c.javaAttr};

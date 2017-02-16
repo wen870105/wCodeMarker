@@ -9,24 +9,24 @@
 -->
 <mapper namespace="${package}.dao.${className}Dao">
 	
-	<resultMap id="${className}-Map" type="${className}">
+	<resultMap id="${className}-Map" type="${package}.domain.${className}">
 		<#list tm.columnMetadata as c>
 		<result property="${c.javaAttr}" column="${c.columnName}"/>
 		</#list>
 	</resultMap>
 	
-	<insert id="add_" keyProperty="id" useGeneratedKeys="true">	
+	<insert id="add_" keyProperty="id" useGeneratedKeys="true">
 		insert into ${tableName}
-		(<#list tm.columnMetadata as c> ${c.columnName}<#if c_has_next>,</#if></#list>) 
+		(<#list tm.columnMetadata as c> ${c.columnName}<#if c_has_next>,</#if></#list>)
 		values
 		(<#list tm.columnMetadata as c> #${'{'?upper_case}${c.javaAttr}}<#if c_has_next>,</#if></#list>)
 	</insert>
 	
-	<select id="get_" resultMap="${className}-Map">
+	<select id="getById_" resultMap="${className}-Map">
 		select * from ${tableName} where id = #${'{'?upper_case}value}
 	</select>
 	
-	<select id="findList_" resultMap="${className}-Map" parameterType="${className}Query">
+	<sql id="querySql">
 		select * from ${tableName}
 		<where>
     	<#list tm.columnMetadata as c>
@@ -35,6 +35,10 @@
 			</if>
 		</#list>
 		</where>
+	</sql>
+	
+	<select id="findList_" resultMap="${className}-Map" parameterType="${className}">
+		<include refid="querySql"/>
 	</select>
 	
 	<update id="update_" parameterType="${className}">
@@ -46,6 +50,18 @@
 			</if>
 			</#list>
 			</set>
+			where id = #${'{'?upper_case}id}
 	</update>
+
+	<select id="queryPageCount" resultType="int" parameterType="${className}">
+		select count(1) from (
+			<include refid="querySql"/>
+		) tmp
+	</select>
+	
+	<select id="queryPage" resultMap="${className}-Map" parameterType="${className}">
+		<include refid="querySql"/>
+		limit #${'{'?upper_case}start}, #${'{'?upper_case}offset}
+	</select>
 
 </mapper>

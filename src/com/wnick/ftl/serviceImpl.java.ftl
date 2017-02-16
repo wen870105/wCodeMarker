@@ -3,22 +3,24 @@ package ${package}.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tj.tjk.base.impl.BaseServiceImpl;
-import com.tj.tjk.pojo.Pagination;
+import ${package}.common.Pagination;
+import ${package}.dao.${className}Dao;
+import ${package}.dao.base.BaseDao;
+import ${package}.domain.${className};
+import ${package}.service.impl.BaseServiceImpl;
 /**
  * 
  * @author ${author}
  * @since ${date}
  */
 @Service("${classInstance}Service")
-public class ${className}ServiceImpl extends BaseServiceImpl<${className}, Long> implements ${className}Service {
-
-	private ${className}Dao ${classInstance}Dao;
+public class ${className}ServiceImpl extends BaseServiceImpl<${className}> implements ${className}Service {
 
 	@Autowired
-	public ${className}ServiceImpl(${className}Dao ${classInstance}Dao) {
-		super(${classInstance}Dao);
-		this.${classInstance}Dao = ${classInstance}Dao;
+	private ${className}Dao ${classInstance}Dao;
+
+	public BaseDao getDao() {
+		return ${classInstance}Dao;
 	}
 	
 	public void create(){}
