@@ -1,3 +1,4 @@
+<#include "copyright.ftl"/>
 package ${package}.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import ${package}.dao.base.BaseDao;
 import ${package}.domain.${className};
 import ${package}.service.impl.BaseServiceImpl;
 /**
- * 
+ * ${tm.tableComment}
  * @author ${author}
  * @since ${date}
  */
@@ -23,10 +24,5 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
 		return ${classInstance}Dao;
 	}
 	
-	public void create(){}
-
-	public Pagination<${className}> query${className}() {
-		return null;
-	}
 }
  

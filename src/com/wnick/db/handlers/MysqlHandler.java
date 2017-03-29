@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.wnick.ResourceManager;
 import com.wnick.db.DBBase;
-import com.wnick.db.TableMetadata;
 
 /**
  * 
@@ -19,11 +18,12 @@ public class MysqlHandler extends AbstractHandler{
 	 */
 	String getPrimaryKey(String tableName) {
 		List<Object[]> l = DBBase.getInstance().queryForListArray(String.format(PRIMARYKEY_SQL, tableName), null);
+		if(l!=null){
 		for(Object[] os : l){
 			if(os[3].toString().toLowerCase().indexOf("pri") > -1){
 				return os[0].toString();
 			}
-		}
+		}}
 		return null;
 	}
 

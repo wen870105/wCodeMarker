@@ -1,3 +1,4 @@
+<#include "copyright.ftl"/>
 package com.vv8.video.web;
 
 import org.apache.commons.logging.Log;

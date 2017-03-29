@@ -1,8 +1,9 @@
+<#include "copyright.ftl"/>
 package ${package}.dao;
 
-import com.tj.platform.order.dao.base.BaseDao;
+import ${package}.dao.base.BaseDao;
 /**
- * 
+ * ${tm.tableComment}
  * @author ${author}
  * @since ${date}
  */

@@ -1,10 +1,11 @@
+<#include "copyright.ftl"/>
 package ${package}.service;
 
 import java.util.List;
 
-import com.tj.tjk.base.BaseService;
+import ${package}.base.BaseService;
 /**
- * 
+ * ${tm.tableComment}
  * @author ${author}
  * @since ${date}
  */

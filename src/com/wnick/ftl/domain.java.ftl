@@ -1,3 +1,4 @@
+<#include "copyright.ftl"/>
 package ${package}.domain;
 
 import java.util.Date;

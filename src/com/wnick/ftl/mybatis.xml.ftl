@@ -37,6 +37,10 @@
 		</where>
 	</sql>
 	
+	<select id="findOne_" resultMap="${className}-Map" parameterType="${className}">
+		<include refid="querySql"/> order by id desc limit 1
+	</select>
+	
 	<select id="findList_" resultMap="${className}-Map" parameterType="${className}">
 		<include refid="querySql"/>
 	</select>
