@@ -5,7 +5,10 @@
 	${tm.tableComment}	
 	@author ${author}
  	@since ${date} 
- 	生成工具备注:ID大写的为BaseDao方法提供通用方法,如果不需要就删除
+ 	wcodemarker生成工具备注:
+ 	1.基础方法尽量不要去修改,如果修改注意影响范围
+ 	2.默认主键名称是ID,如果不是需要修改对应的sql
+ 	3.默认生成的sql为单表相关
 -->
 <mapper namespace="${package}.dao.${className}Dao">
 	
@@ -15,57 +18,96 @@
 		</#list>
 	</resultMap>
 	
-	<insert id="add_" keyProperty="id" useGeneratedKeys="true">
+	<!-- 智能排序与分页 -->
+	<sql id="QUERY_ORDER_LIMIT_CONDTION">
+		<if test="orderField != null and orderField != '' and orderFieldType != null and orderFieldType != ''"><![CDATA[ORDER BY ${r'${orderField}'} ${r'${orderFieldType}'} ]]></if>
+		<if test="startIndex != null and startIndex &gt;= 0 and pageSize != null and pageSize &gt; 0"><![CDATA[LIMIT ${r'#{startIndex}'},${r'#{pageSize}'}]]></if>
+	</sql>
+	
+	<!-- 全部条件(更多功能可以通过queryData扩展实现)  -->
+	<sql id="QUERY_WHERE_CLAUSE">
+		<where>
+			<#list tm.columnMetadata as c>
+			<if test="${c.javaAttr} != null and ${c.javaAttr} != '' ">and ${c.columnName} = #${'{'?upper_case}${c.javaAttr}}</if>
+			</#list>
+		</where>
+	</sql>
+	
+	<!-- 更新列字段,只要不为NULL则更新,除开主键列 -->
+	<sql id="UPDATE_COLUMN_SET">
+		<set>
+			<#list tm.columnMetadata as c>
+			<#if tm.primaryKey != c.columnName >
+			<if test="${c.javaAttr} != null">${c.columnName} = #${'{'?upper_case}${c.javaAttr}},</if>
+			</#if>
+			</#list>
+		</set>
+	</sql>
+	
+	<!-- 插入记录 -->
+	<insert id="add" keyProperty="id" useGeneratedKeys="true">
 		insert into ${tableName}
 		(<#list tm.columnMetadata as c> ${c.columnName}<#if c_has_next>,</#if></#list>)
 		values
 		(<#list tm.columnMetadata as c> #${'{'?upper_case}${c.javaAttr}}<#if c_has_next>,</#if></#list>)
 	</insert>
 	
-	<select id="getById_" resultMap="${className}-Map">
-		select * from ${tableName} where id = #${'{'?upper_case}value}
-	</select>
+	<!-- 删除记录,主键IN(array) -->
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array" >
+		DELETE FROM ${tableName} WHERE id IN
+		<foreach collection="array" item="id" open="(" separator="," close=")">
+			#${r'{'}id}
+		</foreach>
+	</delete>
 	
-	<sql id="querySql">
-		select * from ${tableName}
-		<where>
-    	<#list tm.columnMetadata as c>
-			<if test="${c.javaAttr} != null and ${c.javaAttr} != '' ">
-				and ${c.columnName} = #${'{'?upper_case}${c.javaAttr}}
-			</if>
-		</#list>
-		</where>
-	</sql>
-	
-	<select id="findOne_" resultMap="${className}-Map" parameterType="${className}">
-		<include refid="querySql"/> order by id desc limit 1
-	</select>
-	
-	<select id="findList_" resultMap="${className}-Map" parameterType="${className}">
-		<include refid="querySql"/>
-	</select>
-	
-	<update id="update_" parameterType="${className}">
-		update ${tableName} 
-			<set>
-			<#list tm.columnMetadata as c>
-			<if test="${c.javaAttr} != null and ${c.javaAttr} != '' ">
-				${c.columnName} = #${'{'?upper_case}${c.javaAttr}},
-			</if>
-			</#list>
-			</set>
-			where id = #${'{'?upper_case}id}
+	<!-- 删除,通过条件 -->
+	<update id="deleteByCondtion">
+		DELETE FROM ${tableName}
+		<include refid="QUERY_WHERE_CLAUSE"/>
 	</update>
-
-	<select id="queryPageCount" resultType="int" parameterType="${className}">
-		select count(1) from (
-			<include refid="querySql"/>
-		) tmp
+	
+	<!-- 修改记录通过主键 -->
+	<update id="updateById">
+		UPDATE ${tableName}
+		<include refid="UPDATE_COLUMN_SET"/>
+		WHERE id = #${r'{'}id}
+	</update>
+	
+	<select id="selectById" resultMap="${className}-Map">
+		select * from ${tableName} where id = #${r'{'}value}
 	</select>
 	
-	<select id="queryPage" resultMap="${className}-Map" parameterType="${className}">
-		<include refid="querySql"/>
-		limit #${'{'?upper_case}start}, #${'{'?upper_case}offset}
+	<select id="selectOne" resultMap="${className}-Map" parameterType="${className}">
+		select * from ${tableName} 
+		<include refid="QUERY_WHERE_CLAUSE"/>		 
+		order by id desc limit 1
+	</select>
+	
+	<!-- 查询,通过条件 -->
+	<select id="selectList" resultMap="${className}-Map" parameterType="${className}">
+		select * from ${tableName} 
+		<include refid="QUERY_WHERE_CLAUSE"/>
+		<include refid="QUERY_ORDER_LIMIT_CONDTION"/>
+	</select>
+	
+	<!-- 总数查询,通过条件 -->
+	<select id="selectListCount" parameterType="driver" resultType="int">
+		SELECT COUNT(id) AS dataCount　from ${tableName} 
+		<include refid="QUERY_WHERE_CLAUSE"/>
 	</select>
 
+	<!-- 查询,通过主键IN(array) -->
+	<select id="selectByIds" parameterType="java.lang.reflect.Array" resultType="driverVo">
+		select * from ${tableName} 
+		WHERE id IN
+		<foreach collection="array" item="id" open="(" separator="," close=")">
+			#${r'{'}id}
+		</foreach>
+	</select>
+	
+	<!-- 其它SQL语句 -->
+	
+	
+	
+	
 </mapper>

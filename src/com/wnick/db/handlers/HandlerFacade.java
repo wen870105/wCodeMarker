@@ -3,9 +3,9 @@ package com.wnick.db.handlers;
 import java.util.List;
 
 import com.wnick.ResourceManager;
+import com.wnick.data.BaseData;
 import com.wnick.data.GenerateData;
 import com.wnick.data.IbatisDaoData;
-import com.wnick.data.IbatistXmlData;
 import com.wnick.data.JavaDomainData;
 import com.wnick.data.MybatistXmlData;
 import com.wnick.data.ServiceData;
@@ -22,23 +22,25 @@ public class HandlerFacade {
 	public HandlerFacade() {
 		MysqlHandler h = new MysqlHandler();
 		List<TableMetadata> tms = h.getAllTableMetadata();
+		createFiles(new BaseData(null));
+//		createFiles(new BaseServiceData(null));
+//		createFiles(new BaseServiceImplData(null));
 		//String[] arr = ResourceManager.getInstance().getArray("table.excute");
 		for (TableMetadata tm : tms) {
 		
 			if (!isExcludeTable(tm.getTableName())) {
-				createFiles(new JavaDomainData(tm));
-				createFiles(new IbatistXmlData(tm));
 				createFiles(new IbatisDaoData(tm));
-//				createFiles(new IbatisDaoImplData(tm));
-//				createFiles(new CreateJspData(tm));
+				createFiles(new JavaDomainData(tm));
+				
+				
 				createFiles(new ServiceData(tm));
 				createFiles(new ServiceImplData(tm));
 				createFiles(new MybatistXmlData(tm));
 				
 				/*
 				createFiles(new ActionData(tm));
-				
-				
+				createFiles(new IbatistXmlData(tm));
+				createFiles(new CreateJspData(tm));
 				createFiles(new ListJspData(tm));
 				createFiles(new EditJspData(tm));
 				*/

@@ -1,15 +1,15 @@
 <#include "copyright.ftl"/>
 package ${package}.service;
 
-import java.util.List;
+import ${package}.service.base.BaseService;
+import ${package}.domain.${className};
 
-import ${package}.base.BaseService;
 /**
  * ${tm.tableComment}
  * @author ${author}
  * @since ${date}
  */
-public interface ${className}Service extends BaseService<${className}, Long> {
+public interface ${className}Service extends BaseService<${className}> {
 
 }
  

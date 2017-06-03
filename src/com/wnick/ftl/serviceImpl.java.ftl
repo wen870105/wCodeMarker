@@ -4,11 +4,10 @@ package ${package}.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ${package}.common.Pagination;
 import ${package}.dao.${className}Dao;
 import ${package}.dao.base.BaseDao;
 import ${package}.domain.${className};
-import ${package}.service.impl.BaseServiceImpl;
+import ${package}.service.base.BaseServiceImpl;
 /**
  * ${tm.tableComment}
  * @author ${author}
@@ -20,7 +19,7 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
 	@Autowired
 	private ${className}Dao ${classInstance}Dao;
 
-	public BaseDao getDao() {
+	public BaseDao<${className}> getDao() {
 		return ${classInstance}Dao;
 	}
 	

@@ -2,7 +2,6 @@
 package ${package}.domain;
 
 import java.util.Date;
-import java.io.Serializable;
 import ${package}.domain.base.BaseDomain;
 
 /**
@@ -10,7 +9,7 @@ import ${package}.domain.base.BaseDomain;
  * @author ${author}
  * @since ${date}
  */
-public class ${className} implements Serializable{
+public class ${className} extends BaseDomain{
 <#list tm.columnMetadata as c>
 	// ${c.columnComment}
 	private ${c.javaType} ${c.javaAttr};

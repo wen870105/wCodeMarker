@@ -14,7 +14,6 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import com.wnick.ResourceManager;
-import com.wnick.db.handlers.HandlerFacade;
   
 /**
  * 
@@ -33,7 +32,7 @@ public class DBBase {
     }  
     
     static{
-    	dbBase = new DBBase(setupDataSource());  
+    	dbBase = new DBBase(setupDataSource());
     }
       
     private static DataSource setupDataSource() { 
@@ -42,7 +41,7 @@ public class DBBase {
         ds.setDriverClassName(rm.getString("jdbc.driverClassName"));  
         ds.setUsername(rm.getString("jdbc.username"));  
         ds.setPassword(rm.getString("jdbc.password"));  
-        ds.setUrl(rm.getString("jdbc.url"));  
+        ds.setUrl(rm.getString("jdbc.url"));
         return ds;  
     }  
       

@@ -35,6 +35,17 @@ public abstract class GenerateData {
 		this.tm = tm;
 	}
 
+	String getPackageDir(){
+		return "d:\\"+PACKAGE_STR.replaceAll("\\.", "/")+ "/" +getPackageStoreDirectory();
+	}
+	
+	String getFileName(){
+		if(this.getFileSuffix().contains("xml") || this.getFileSuffix().contains("jsp")){
+			return StringUtil.getLowerFirstName(tm.getTableNameWithoutPrefix())  + this.getFileSuffix();
+		}else{
+			return StringUtil.getUpperFirstName(tm.getTableNameWithoutPrefix())  + this.getFileSuffix();
+		}
+	}
 	/**
 	 * 
 	 * @param tm
@@ -45,29 +56,14 @@ public abstract class GenerateData {
 	public String creatFile() {
 		CountManager.increment();
 		
-		String packageString = "d:\\"+PACKAGE_STR.replaceAll("\\.", "/")+ "/" +getPackageStoreDirectory();
+		String packageString = getPackageDir();
 		//存放目录 
 		File dir = new File(packageString);
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
 		
-		String path;
-		
-		// jsp 文件首字母小写
-		/*
-		if(this.getFileSuffix().lastIndexOf("jsp") > -1){
-			path = this.tm.getTalbeField() + this.getFileSuffix();
-		}else{
-			path = tm.getTalbeNameWithoutPrefix() + this.getFileSuffix();
-		}
-		*/
-		if(this.getFileSuffix().contains("xml") || this.getFileSuffix().contains("jsp")){
-			path = StringUtil.getLowerFirstName(tm.getTableNameWithoutPrefix())  + this.getFileSuffix();
-		}else{
-			path = StringUtil.getUpperFirstName(tm.getTableNameWithoutPrefix())  + this.getFileSuffix();
-		}
-		path = dir.getPath() +"\\" +path;
+		String path = dir.getPath() +"\\" +getFileName();
 		// 判断java文件是否存在如果存在则删除原文件 
 		File javafile = new File(path);
 		
