@@ -21,7 +21,7 @@
 	<!-- 智能排序与分页 -->
 	<sql id="QUERY_ORDER_LIMIT_CONDTION">
 		<if test="orderField != null and orderField != '' and orderFieldType != null and orderFieldType != ''"><![CDATA[ORDER BY ${r'${orderField}'} ${r'${orderFieldType}'} ]]></if>
-		<if test="startIndex != null and startIndex &gt;= 0 and pageSize != null and pageSize &gt; 0"><![CDATA[LIMIT ${r'#{startIndex}'},${r'#{pageSize}'}]]></if>
+		<if test="startIndex != null and startIndex &gt;= 0 and offset != null and offset &gt; 0"><![CDATA[LIMIT ${r'#{startIndex}'},${r'#{offset}'}]]></if>
 	</sql>
 	
 	<!-- 全部条件(更多功能可以通过queryData扩展实现)  -->
@@ -77,12 +77,6 @@
 		select * from ${tableName} where id = #${r'{'}value}
 	</select>
 	
-	<select id="selectOne" resultMap="${className}-Map" parameterType="${className}">
-		select * from ${tableName} 
-		<include refid="QUERY_WHERE_CLAUSE"/>		 
-		order by id desc limit 1
-	</select>
-	
 	<!-- 查询,通过条件 -->
 	<select id="selectList" resultMap="${className}-Map" parameterType="${className}">
 		select * from ${tableName} 
@@ -92,7 +86,7 @@
 	
 	<!-- 总数查询,通过条件 -->
 	<select id="selectListCount" parameterType="${className}" resultType="int">
-		SELECT COUNT(id) AS dataCount　from ${tableName} 
+		select count(1) from ${tableName} 
 		<include refid="QUERY_WHERE_CLAUSE"/>
 	</select>
 

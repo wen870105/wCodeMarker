@@ -4,17 +4,16 @@ package ${package}.domain.base;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 /**
- * 
- * @author Wen
- *
- * @CreateDate 2017年1月4日
+ * 基础方法不建议修改,如需修改请修改对应的子类
+ * @author wEn
+ * @CreatDate: ${date} 
  */
-public class BaseDomain extends QueryCondition {
+public class BaseDomain extends BaseQuery {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4597554221498486920L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public String toString() {

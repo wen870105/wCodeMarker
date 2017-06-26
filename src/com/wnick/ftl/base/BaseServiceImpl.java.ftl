@@ -3,16 +3,17 @@ package ${package}.service.base;
 
 import java.util.List;
 
+import ${package}.domain.base.BaseDomain;
+import ${package}.domain.base.BaseQuery;
 import ${package}.dao.base.BaseDao;
 import ${package}.domain.base.Page;
-
 
 /**
  * 基础方法不建议修改,如需修改请修改对应的子类
  * @author wEn
  * @CreatDate: ${date} 
  */
-public class BaseServiceImpl<T> implements BaseService<T> {
+public class BaseServiceImpl<T extends BaseDomain> implements BaseService<T> {
 
 	@Override
 	public void add(T t) {
@@ -41,7 +42,10 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
 	@Override
 	public T selectOne(T t) {
-		return getDao().selectOne(t);
+		t.setStartIndex(0);
+		t.setOffset(1);
+		List<T> l = getDao().selectList(t);
+		return l!=null && l.size()>0 ? l.get(0) : null;
 	}
 
 	@Override
@@ -69,13 +73,14 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
 	@Override
 	public Page<T> selectPage(T condtion, Page<T> page) {
-		try {
-			Class<?> clz = condtion.getClass();
-			clz.getMethod("setStartIndex", Integer.class).invoke(condtion, page.getStartIndex());
-			clz.getMethod("setEndIndex", Integer.class).invoke(condtion, page.getEndIndex());
-		} catch (Exception e) {
-			throw new IllegalArgumentException("设置分页参数失败", e);
+		if(condtion instanceof BaseQuery){
+			BaseQuery bq = condtion;
+			bq.setStartIndex(page.getStartIndex());
+			bq.setOffset(page.getPageSize());
+		}else{
+			throw new IllegalArgumentException("设置分页参数失败,参数不是BaseQuery的子类");
 		}
+		
 		int size = getDao().selectListCount(condtion);
 		if(size <= 0) {
 			return page;
@@ -84,5 +89,4 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 		page.setResult(getDao().selectList(condtion));
 		return page;
 	}
-	
 }

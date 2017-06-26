@@ -2,7 +2,7 @@ package com.wnick.data;
 
 import com.wnick.db.TableMetadata;
 /**
- * mybatis xml
+ * 
  * @author Wen
  * @CreatDate: 2016年5月19日
  */
@@ -62,9 +62,14 @@ public class BaseData extends SimpleGenerateData{
 		name = "Page.java";
 		super.creatFile();
 		
-		ftl = "base/QueryCondition.java.ftl";
+		ftl = "base/BaseQuery.java.ftl";
 		dir = "domain/base";
-		name = "QueryCondition.java";
+		name = "BaseQuery.java";
+		super.creatFile();
+		
+		ftl = "base/DemoAction.java.ftl";
+		dir = "web";
+		name = "DemoAction.java";
 		super.creatFile();
 		return null;
 	}

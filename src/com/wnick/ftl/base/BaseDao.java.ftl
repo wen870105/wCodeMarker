@@ -20,8 +20,6 @@ public interface BaseDao<T> {
 	
 	public T selectById(long id);
 
-	public T selectOne(T t);
-	
 	public List<T> selectList(T t);
 
 	public int selectListCount(T t) ;

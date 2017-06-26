@@ -34,5 +34,5 @@ public interface BaseService<T>{
 	
 	public BaseDao<T> getDao();
 	
-	public Page<T> selectPage(T condtion, Page<T> page);
+	public Page<T> selectPage(T condition, Page<T> page);
 }
