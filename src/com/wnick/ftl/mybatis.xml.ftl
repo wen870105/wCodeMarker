@@ -91,13 +91,13 @@
 	</select>
 	
 	<!-- 总数查询,通过条件 -->
-	<select id="selectListCount" parameterType="driver" resultType="int">
+	<select id="selectListCount" parameterType="${className}" resultType="int">
 		SELECT COUNT(id) AS dataCount　from ${tableName} 
 		<include refid="QUERY_WHERE_CLAUSE"/>
 	</select>
 
 	<!-- 查询,通过主键IN(array) -->
-	<select id="selectByIds" parameterType="java.lang.reflect.Array" resultType="driverVo">
+	<select id="selectByIds" parameterType="java.lang.reflect.Array" resultMap="${className}-Map">
 		select * from ${tableName} 
 		WHERE id IN
 		<foreach collection="array" item="id" open="(" separator="," close=")">
